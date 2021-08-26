@@ -1,4 +1,5 @@
 // Assignment code here
+// var letters = "abcdefghijklmnopqrstuvwxyz";
 var UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
 var NUMBERS = "0123456789";
