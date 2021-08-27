@@ -1,7 +1,5 @@
 // Assignment code here
-// var letters = "abcdefghijklmnopqrstuvwxyz";
-var UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-var LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
+var LETTERS = "abcdefghijklmnopqrstuvwxyz";
 var NUMBERS = "0123456789";
 var SPECIALCHARACTERS = "!@#$%^&*()-+,./?<>";
 
@@ -10,6 +8,13 @@ var passwordUppercase;
 var passwordLowercase;
 var passwordNumbers;
 var passwordSpecialCharacters;
+// main pass word array
+var passwordSet = [];
+
+function splitPush(sets) {
+  var array = sets.split('');
+  passwordSet.push(array);
+}
 
 function setPasswordRequirements() {
   // prompts user for their password requirements
@@ -23,14 +28,28 @@ function setPasswordRequirements() {
   } else {
     // else prompt the user for the other requirements
     passwordUppercase = window.confirm("Would you like Uppercase Letters?");
+    if (passwordUppercase) {
+      var upper = LETTERS.toUpperCase().split('');
+      passwordSet.push(upper);
+    }
     passwordLowercase = window.confirm("Would you like Lowercase Letters?");
+    if (passwordLowercase) {
+      splitPush(LETTERS);
+    }
     passwordNumbers = window.confirm("Would you like to include numbers");
+    if (passwordNumbers) {
+      splitPush(NUMBERS);
+    }
     passwordSpecialCharacters = window.confirm("Would you like special Characters?");
+    if (passwordSpecialCharacters) {
+      splitPush(SPECIALCHARACTERS);
+    }
     // if the user doesn't add any requirements, alert the user of this error and recursivel call function
     if (!passwordUppercase && !passwordLowercase && !passwordNumbers && !passwordSpecialCharacters) {
       alert(`Please select at lease one data type.`);
       setPasswordRequirements();
     }
+    console.log(passwordSet);
   }
 }
 
