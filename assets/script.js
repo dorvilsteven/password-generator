@@ -1,8 +1,10 @@
 // Assignment code here
+// data constants
 var LETTERS = "abcdefghijklmnopqrstuvwxyz";
 var NUMBERS = "0123456789";
 var SPECIALCHARACTERS = "!@#$%^&*()-+,./?<>";
 
+// data tbt
 var passwordLength;
 var passwordUppercase;
 var passwordLowercase;
@@ -10,10 +12,23 @@ var passwordNumbers;
 var passwordSpecialCharacters;
 // main pass word array
 var passwordSet = [];
-
+// function to add elements to main password array when certain requirements are chosen
 function splitPush(sets) {
   var array = sets.split('');
   passwordSet.push(array);
+}
+// function to get each character from the passwordSet array
+function getCharacters(set) {
+  // set is an array of array whose lenth varies 
+  // randomNum will be a number between 0 and the length of set 
+  // which can be a max of 4. (0 to 3) (0 to 2) (0 to 1) or just (0)
+  // after we get that number which will be randomNum, we'll use it to traverse
+  // and access the different elements each of the arrays
+  // lastly we will return a random element for that array
+  var randomNum = Math.floor(Math.random()*(set.length));
+  return (
+    set[randomNum][Math.floor(Math.random()*(set[randomNum].length))]
+    );
 }
 
 function setPasswordRequirements() {
@@ -27,6 +42,7 @@ function setPasswordRequirements() {
     setPasswordRequirements();
   } else {
     // else prompt the user for the other requirements
+    // for each requirement if true, add the corresponding characters to the passwordSet array 
     passwordUppercase = window.confirm("Would you like Uppercase Letters?");
     if (passwordUppercase) {
       var upper = LETTERS.toUpperCase().split('');
@@ -49,85 +65,6 @@ function setPasswordRequirements() {
       alert(`Please select at lease one data type.`);
       setPasswordRequirements();
     }
-    console.log(passwordSet);
-  }
-}
-
-function getCharacters(set) {
-  // set is an array of strings that is passed as a parameter 
-  // randomNum will be a number between 0 and the length of set 
-  // which can be a max of 4. (0 to 3) (0 to 2) (0 to 1) or just (0)
-  // in order to choose randomly which string in the set array we
-  // want to use, as well as to access the length of that string so 
-  // we can access the individual characters.
-  var randomNum = Math.floor(Math.random()*(set.length));
-  return (set[randomNum].charAt(Math.floor(Math.random()*(set[randomNum].length))));
-}
-
-// random password function that takes in four boolean parameters
-function randomPassword(uppercase, lowercase, numbers, specialCharacters) {
-  // sets is an array of strings that will 
-  // be dynamically updated
-  var sets;
-  // if all arguments are true  
-  if (uppercase && lowercase && numbers && specialCharacters) {
-    sets = [UPPERCASE, LOWERCASE, NUMBERS, SPECIALCHARACTERS];
-    return getCharacters(sets);
-  } 
-  
-  // only 2 out of the 4 arguments are true
-  if (!uppercase && !lowercase && numbers && specialCharacters) {
-    sets = [NUMBERS, SPECIALCHARACTERS];
-    return getCharacters(sets);
-  }  else if (uppercase && lowercase && !numbers && !specialCharacters) {
-    sets = [UPPERCASE, LOWERCASE];
-    return getCharacters(sets);
-  } 
-  if (!uppercase && lowercase && !numbers && specialCharacters) {
-    sets = [LOWERCASE, SPECIALCHARACTERS];
-    return getCharacters(sets);
-  } else if (uppercase && !lowercase && numbers && !specialCharacters) {
-    sets = [UPPERCASE, NUMBERS];
-    return getCharacters(sets);
-  }
-  if (!uppercase && lowercase && numbers && !specialCharacters) {
-    sets = [LOWERCASE, NUMBERS];
-    return getCharacters(sets);
-  } else if (uppercase && !lowercase && !numbers && specialCharacters) {
-    sets = [UPPERCASE, SPECIALCHARACTERS];
-    return getCharacters(sets);
-  }
-  // if only uppercase is false and the opposite
-  if (!uppercase && lowercase && numbers && specialCharacters) {
-    sets = [LOWERCASE, NUMBERS, SPECIALCHARACTERS];
-    return getCharacters(sets);
-  } else if (uppercase && !lowercase && !numbers && !specialCharacters) {
-    sets = [UPPERCASE];
-    return getCharacters(sets);
-  }
-  // if only lowercase is false and the opposite
-  if (uppercase && !lowercase && numbers && specialCharacters) {
-    sets = [UPPERCASE, NUMBERS, SPECIALCHARACTERS];
-    return getCharacters(sets);
-  } else if (!uppercase && lowercase && !numbers && !specialCharacters) {
-    sets = [LOWERCASE];
-    return getCharacters(sets);
-  }
-  // if only numbers is false and the opposite
-  if (uppercase && lowercase && !numbers && specialCharacters) {
-    sets = [UPPERCASE, LOWERCASE, SPECIALCHARACTERS];
-    return getCharacters(sets);
-  } else if (!uppercase && !lowercase && numbers && !specialCharacters) {
-    sets = [NUMBERS];
-    return getCharacters(sets);
-  }
-  // if only special characters is false and the opposite
-  if (uppercase && lowercase && numbers && !specialCharacters) {
-    sets = [UPPERCASE, LOWERCASE, NUMBERS];
-    return getCharacters(sets);
-  } else if (!uppercase && !lowercase && !numbers && specialCharacters) {
-    sets = [SPECIALCHARACTERS];
-    return getCharacters(sets);
   }
 }
 
@@ -140,9 +77,9 @@ function generatePassword() {
   // create empty string
   var password = "";
   // loop until desired password length and during each loop
-  // a new character will be added to the password string
+  // a new random character will be added to the password string
   for (var i=0;i<passwordLength;i++) {
-    password += randomPassword(passwordUppercase, passwordLowercase, passwordNumbers, passwordSpecialCharacters);
+    password += getCharacters(passwordSet);
   }
   // when the loop is finish return the password string
   return password;
@@ -152,9 +89,7 @@ function generatePassword() {
 function writePassword() {
   var password = generatePassword();
   var passwordText = document.querySelector("#password");
-
   passwordText.value = password;
-
 }
 
 // Add event listener to generate button
